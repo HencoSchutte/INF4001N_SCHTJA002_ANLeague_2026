@@ -1,0 +1,101 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.animate-pop {
+  animation: pop 0.4s ease-out forwards;
+}
+
+@keyframes spark-travel {
+  0% { offset-distance: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.spark {
+  offset-path: var(--path);
+  offset-rotate: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: spark-travel 0.9s ease-out forwards;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.9));
+}
+
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@layer utilities {
+  .fadeOutCard {
+    animation: fadeOutShrink 0.35s ease forwards;
+  }
+
+  @keyframes fadeOutShrink {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.85); }
+  }
+}
+
+.flag-wave {
+  background-size: cover;
+  background-position: center;
+  animation: waveFlag 2.8s ease-in-out infinite;
+  filter: brightness(1.12) contrast(1.04);
+}
+
+@keyframes waveFlag {
+  0% { transform: translateX(0) skewY(0deg); }
+  25% { transform: translateX(-3px) skewY(-2.5deg); }
+  50% { transform: translateX(-6px) skewY(0deg); }
+  75% { transform: translateX(-3px) skewY(2.5deg); }
+  100% { transform: translateX(0) skewY(0deg); }
+}
+
+

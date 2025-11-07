@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-fader {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.8s ease-out;
+}
+
+.main-fader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader svg {
+  height: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.loader svg path {
+  animation-duration: 1s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  color: #fff;
+}
+
+.loader svg .path-7 {
+  animation-delay: -1s;
+}
+.loader svg .path-6 {
+  animation-delay: -0.875s;
+}
+.loader svg .path-5 {
+  animation-delay: -0.75s;
+}
+.loader svg .path-4 {
+  animation-delay: -0.625s;
+}
+.loader svg .path-3 {
+  animation-delay: -0.5s;
+}
+.loader svg .path-2 {
+  animation-delay: -0.375s;
+}
+.loader svg .path-1 {
+  animation-delay: -0.25s;
+}
+.loader svg .path-0 {
+  animation-delay: -0.125s;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.1;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
