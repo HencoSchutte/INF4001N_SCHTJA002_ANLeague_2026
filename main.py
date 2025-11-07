@@ -37,7 +37,8 @@ Endpoints summary (HTTP):
 
 StartUp
 - uvicorn main:app --reload --port 8000
-- .\venv\Scripts\Activate
+- ./venv/Scripts/Activate
+
 
 """
 
