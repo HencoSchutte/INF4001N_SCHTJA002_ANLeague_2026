@@ -7,3 +7,4 @@ python-dotenv
 fastapi-mail
 numpy
 PyJWT
+httpx
