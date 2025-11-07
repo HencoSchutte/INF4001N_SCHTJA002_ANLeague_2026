@@ -81,7 +81,7 @@ export const replaceTeam = (removeId, data, token) =>
 
   export async function deleteTeam(teamId) {
   const token = localStorage.getItem("adminToken");
-  const res = await fetch(`http://localhost:8000/teams/${teamId}`, {
+  const res = await fetch(`${API_BASE}/teams/${teamId}`, {
     method: "DELETE",
     headers: {
       "Authorization": `Bearer ${token}`,
@@ -92,8 +92,9 @@ export const replaceTeam = (removeId, data, token) =>
   return res.json();
 }
 
+
 export async function getTeamById(id) {
-  const res = await fetch(`http://localhost:8000/teams/${id}`);
+  const res = await fetch(`${API_BASE}/teams/${id}`);
   if (!res.ok) throw new Error("Failed to fetch team");
   return res.json();
 }
