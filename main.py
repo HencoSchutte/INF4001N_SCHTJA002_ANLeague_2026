@@ -72,14 +72,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://amazing-flan-d715e1.netlify.app"
+        "https://amazing-flan-d715e1.netlify.app",
         "https://inf4001n-schtja002-anleague-2026.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
+
 # --- Load environment variables ---
 load_dotenv()
 
