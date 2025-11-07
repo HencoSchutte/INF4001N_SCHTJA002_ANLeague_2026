@@ -70,7 +70,10 @@ app = FastAPI(title="African Nations League - Backend Starter")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # frontend dev server
+    allow_origins=[
+        "http://localhost:5173",
+        "https://amazing-flan-d715e1.netlify.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
