@@ -1,6 +1,5 @@
 """
 FastAPI Starter for "African Nations League" assignment
-File: fastapi_africa_nations_backend.py
 
 This single-file starter implements:
 - MongoDB (Motor) async connection
@@ -24,7 +23,7 @@ Install:
     pip install fastapi uvicorn motor python-dotenv numpy
 
 Run (development):
-    export MONGODB_URI="your_mongo_uri_here"
+    export MONGO_URI=mongodb+srv://hencoschutte2002_db_user:gUjPII0b1PTjvLWW@anl2026cluster.bjk4pzo.mongodb.net/?retryWrites=true&w=majority&appName=ANL2026Cluster
 
 Endpoints summary (HTTP):
 - POST /seed/create_demo_teams        -> creates 7 demo teams (returns team ids)
@@ -35,11 +34,6 @@ Endpoints summary (HTTP):
 - POST /tournament/start              -> admin route to start tournament if 8 teams registered
 - POST /matches/{match_id}/simulate  -> simulate the match and return result
 - GET  /tournament/bracket            -> view bracket (basic)
-
-Notes / Simplifications for the assignment/demo:
-- No authentication implemented (add JWT/auth later if needed)
-- Representative emails are stored but no email sending implemented yet (can add later)
-- Admin-only checks are not enforced; assume trusted usage for demo.
 
 StartUp
 - uvicorn main:app --reload --port 8000
@@ -84,8 +78,8 @@ app.add_middleware(
 load_dotenv()
 
 # MongoDB connection (Atlas)
-MONGO_URI = os.getenv("MONGO_URI")  # Your Atlas URI from .env
-DB_NAME = os.getenv("DATABASE_NAME", "african_nations")  # default if not set
+MONGO_URI = os.getenv("MONGO_URI")  
+DB_NAME = os.getenv("DATABASE_NAME", "african_nations") 
 if not MONGO_URI:
     raise ValueError("MONGO_URI environment variable is not set")
 
@@ -731,23 +725,35 @@ async def seed_create_demo_teams(admin=Depends(admin_required)):
 
 @app.post("/seed/add_demo_team")
 async def seed_add_demo_team(admin=Depends(admin_required)):
-    num = random.randint(1, 999)
-    country = f"DemoLand{num}"
-    team_name = f"Demo Warriors {num}"
+    # get all taken countries
+    taken = await db.teams.distinct("country")
+    available = [c for c in AFRICAN_COUNTRIES if c not in set(taken)]
+
+    if not available:
+        raise HTTPException(status_code=400, detail="No available African countries left to assign a demo team.")
+
+    # pick one random available African country
+    country = random.choice(available)
+
+    # create a teamName based on the country (more realistic)
+    team_name = f"{country} Demo XI"
 
     tdoc = {
         "_id": make_id("team"),
         "country": country,
-        "teamName": team_name,   # NEW
+        "teamName": team_name,
         "managerName": f"Manager {country}",
-        "representativeEmail": f"rep_{country.lower()}@example.com",
+        "representativeEmail": f"{country.lower().replace(' ', '_')}@example.com",
         "squad": [],
         "rating": 0.0,
         "createdAt": datetime.utcnow()
     }
+
     await db.teams.insert_one(tdoc)
     await autofill_team(tdoc["_id"])
+
     return {"teamId": tdoc["_id"], "country": country, "teamName": team_name}
+
 
 
 # Helper: build quarter-final bracket when exactly 8 teams
@@ -938,7 +944,6 @@ async def generate_ai_commentary(home, away, events, went_extra, penalty_result,
     - Keep it 8–12 sentences, short and punchy
     """
 
-    # 🔥 Call Ollama API here (your streaming code)
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             async with client.stream(
@@ -1417,7 +1422,7 @@ async def auto_simulate_tournament(admin=Depends(admin_required)):
             tournament = await db.tournaments.find_one({"_id": tournament["_id"]})
             return {"message": "Tournament finished.", "tournament": tournament}
 
-    # Simulate each match using your match logic
+    # Simulate each match using match logic
     results = []
     winners = []
     for match in current_matches:
@@ -1514,7 +1519,7 @@ async def rebuild_bracket(admin=Depends(admin_required)):
     await db.tournaments.insert_one(tournament_doc)
 
     # 4) pair up and insert quarter-final matches
-    random.shuffle(top8)  # optional: keep some randomness while still being top 8
+    random.shuffle(top8)  
     match_ids = []
     for i in range(0, 8, 2):
         m_id = make_id("match")
@@ -1556,7 +1561,7 @@ async def rebuild_bracket(admin=Depends(admin_required)):
 async def test_email(background_tasks: BackgroundTasks):
     message = MessageSchema(
         subject="Test Email from African Nations League",
-        recipients=["test@example.com"],  # you can put your Mailtrap inbox email here
+        recipients=["test@example.com"],  
         body="Hello! This is a test email from your FastAPI backend.",
         subtype="plain"
     )

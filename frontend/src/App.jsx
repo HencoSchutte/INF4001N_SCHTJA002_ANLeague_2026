@@ -20,6 +20,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -44,7 +46,7 @@ function App() {
         <div className="min-h-screen flex flex-col">
 
           {/* NAVBAR */}
-          <nav className="bg-[#030712]/80 backdrop-blur-xl border-b border-blue-400/20 shadow-[0_0_18px_rgba(0,145,255,0.25)] px-6 py-3 flex justify-between items-center select-none">
+          <nav className="bg-[#030712]/80 backdrop-blur-xl border-b border-blue-400/20 shadow-[0_0_18px_rgba(0,145,255,0.25)] px-4 py-3 flex justify-between items-center select-none">
 
             {/* Logo + Title */}
             <Link to="/" className="flex items-center space-x-3 group cursor-pointer">
@@ -53,13 +55,21 @@ function App() {
                 alt="League Logo"
                 className="w-10 h-10 transform transition duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_rgba(0,145,255,0.6)]"
               />
-              <h1 className="font-black uppercase tracking-widest text-blue-300 drop-shadow-[0_0_6px_rgba(0,145,255,0.65)] group-hover:text-blue-200 transition">
+              <h1 className="font-black uppercase tracking-widest text-blue-300 drop-shadow-[0_0_6px_rgba(0,145,255,0.65)] group-hover:text-blue-200 transition text-sm sm:text-base md:text-lg">
                 African Nations League
               </h1>
             </Link>
 
-            {/* Nav Links with Glow Underline Active */}
-            <div className="relative flex space-x-6 text-sm font-semibold uppercase tracking-wider">
+            {/* Hamburger for mobile */}
+            <button 
+              className="md:hidden text-blue-300 font-bold text-2xl"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              ☰
+            </button>
+
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex space-x-6 text-sm font-semibold uppercase tracking-wider">
               {navLinks.map((item) => (
                 <Link
                   key={item.to}
@@ -73,8 +83,26 @@ function App() {
                 </Link>
               ))}
             </div>
-
           </nav>
+          {/* Mobile dropdown */}
+          {mobileOpen && (
+            <div className="md:hidden absolute left-0 right-0 top-[64px] bg-[#050a18]/95 border-b border-blue-400/20 py-3 px-5 shadow-xl z-50">
+              {navLinks.map((item, idx) => (
+                <div key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="block text-blue-200 text-sm font-semibold uppercase tracking-wider py-2"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                  {idx < navLinks.length - 1 && (
+                    <div className="h-[1px] w-full bg-blue-300/20 my-1"></div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* ROUTES */}
           <main className="flex-grow p-6">

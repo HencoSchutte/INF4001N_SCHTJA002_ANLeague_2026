@@ -71,15 +71,10 @@ export default function Bracket() {
     if (savedToken) setAdminToken(savedToken);
   }, []);
 
-   // Recompute connectors when:
-  // - bracket changes
-  // - after first paint (cards exist)
-  // - window resizes
   useEffect(() => {
   if (!bracket) return;
   if (!containerRef.current) return;
   
-  // run once after paint
   const raf = requestAnimationFrame(() => {
     try {
       recomputePaths();
@@ -105,7 +100,6 @@ export default function Bracket() {
       const data = await getBracket();
       setBracket(data);
       // detect new round unlocks
-      // if no matches yet -> do not try mapping round state unlocking
       if (!data.matches || !Array.isArray(data.matches) || data.matches.length === 0) {
         setBracket(data);
         return;
@@ -253,7 +247,7 @@ async function ensureDetails(matchId) {
     const root = containerRef.current;
     if (!root) return;
 
-    // prevent layout compute before any matches exist / refs mounted
+    // prevent layout compute before any matches exist
     if (!qf.length && !sf.length && !fin.length) return;
 
     const rectRoot = root.getBoundingClientRect();
@@ -287,7 +281,7 @@ async function ensureDetails(matchId) {
       return d;
     };
 
-    // QF (0,1) -> SF[0], QF (2,3) -> SF[1]
+    // QF (0,1) - SF[0], QF (2,3) -SF[1]
     const qfToSfPairs = [
       [qf[0]?._id, qf[1]?._id, sf[0]?._id],
       [qf[2]?._id, qf[3]?._id, sf[1]?._id],
@@ -305,7 +299,7 @@ async function ensureDetails(matchId) {
       });
     });
 
-    // SF -> Final
+    // SF - Final
     const fid = fin[0]?._id;
     if (fid) {
       const fL = getLeftCenter(cardRefs.current[fid]);
@@ -360,7 +354,7 @@ async function ensureDetails(matchId) {
           }}
         >
         {/* SVG connectors (behind cards) */}
-        <div className="relative" >
+        <div className="relative hidden md:block">
 
         <svg
           className="pointer-events-none absolute inset-0 z-0"
@@ -373,17 +367,17 @@ async function ensureDetails(matchId) {
           return (
             <g key={i}>
               <motion.path
-  d={p.d}
-  fill="none"
-  strokeWidth="2.5"
-  className={
-    p.className +
-    (isGlow ? " shadow-[0_0_12px_rgba(0,145,255,0.9)] brightness-150" : "")
-  }
-  initial={{ pathLength: 0 }}
-  animate={{ pathLength: 1 }}
-  transition={{ duration: 1.8, ease: "easeInOut", delay: 0.6 + i * 0.15 }}
-/>
+              d={p.d}
+              fill="none"
+              strokeWidth="2.5"
+              className={
+                p.className +
+                (isGlow ? " shadow-[0_0_12px_rgba(0,145,255,0.9)] brightness-150" : "")
+              }
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.8, ease: "easeInOut", delay: 0.6 + i * 0.15 }}
+            />
 
               {isGlow && (
                 <>
@@ -405,9 +399,15 @@ async function ensureDetails(matchId) {
 
 
         </svg>
+        </div>
 
-        <motion.div 
-          className="relative z-10 grid grid-cols-3 gap-12 text-gray-200"
+        <motion.div
+          className="
+            relative z-10 
+            grid 
+            grid-cols-1 md:grid-cols-3 
+            gap-12 text-gray-200 
+          "
           variants={{
             show: {
               transition: {
@@ -422,25 +422,25 @@ async function ensureDetails(matchId) {
           
 
           {/* Quarterfinals */}
-          <div className="relative w-full flex flex-col gap-10 items-start bg-gradient-to-b from-blue-900/10 via-transparent to-transparent rounded-xl p-3">
+          <div className="relative w-full flex flex-col gap-10 items-center md:items-start bg-gradient-to-b from-blue-900/10 via-transparent to-transparent rounded-xl p-3">
             <h3 className="text-center font-black text-lg uppercase italic tracking-[0.12em] text-blue-200 drop-shadow-[0_0_8px_rgba(20,130,255,0.60)]">
               Quarter Finals
               <span className="block mx-auto mt-1 h-1 w-10 bg-blue-500 rounded-full"></span>
             </h3>
 
-              <div className="flex flex-col gap-24 translate-x-[100px]">
+              <div className="flex flex-col gap-24 md:translate-x-[100px] translate-x-0">
                 {qf.map((m, i) => renderMatchCard(m, i))}
               </div>
 
           </div>
 
           {/* Semifinals */}
-          <div className="relative w-full flex flex-col gap-24 items-start bg-gradient-to-b from-blue-900/20 via-transparent to-transparent rounded-xl p-3">
+          <div className="relative w-full flex flex-col gap-10 items-center md:items-start bg-gradient-to-b from-blue-900/20 via-transparent to-transparent rounded-xl p-3">
             <h3 className="text-center font-black text-lg uppercase italic tracking-[0.12em] text-blue-200 drop-shadow-[0_0_8px_rgba(20,130,255,0.60)]">
               Semi Finals
               <span className="block mx-auto mt-1 h-1 w-10 bg-blue-500 rounded-full"></span>
             </h3>
-              <div className="flex flex-col gap-24 translate-x-[100px]">
+              <div className="flex flex-col gap-24 md:translate-x-[100px] translate-x-0">
               {[...sf, ...Array(2 - sf.length).fill(null)].map((m, i) =>
                 m ? renderMatchCard(m, i) : renderPlaceholderCard()
               )}
@@ -451,18 +451,18 @@ async function ensureDetails(matchId) {
           </div>
 
           {/* Final */}
-          <div className="relative w-full flex flex-col gap-24 items-start bg-gradient-to-b from-blue-900/20 via-transparent to-transparent rounded-xl p-3">
+          <div className="relative w-full flex flex-col gap-10 items-center md:items-start bg-gradient-to-b from-blue-900/20 via-transparent to-transparent rounded-xl p-3">
              <h3 className="text-center font-black text-lg uppercase italic tracking-[0.12em] text-blue-200 drop-shadow-[0_0_8px_rgba(20,130,255,0.60)]">
             Final
             <span className="block mx-auto mt-1 h-1 w-10 bg-blue-500 rounded-full"></span></h3>
-           <div className="flex flex-col gap-24 translate-x-[100px]">
+           <div className="flex flex-col gap-24 md:translate-x-[100px] translate-x-0">
               {[...fin, ...Array(1 - fin.length).fill(null)].map((m, i) =>
                 m ? renderMatchCard(m, i, true) : renderPlaceholderCard()
               )}
             </div>
           </div>
         </motion.div>
-        </div>
+        
       </motion.div>
 
       

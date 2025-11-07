@@ -15,9 +15,6 @@ export default function TopScorers() {
   const [selectedSeason, setSelectedSeason] = useState("2026");
   const [sortDir, setSortDir] = useState("desc"); // sorting goals
   
-
-
-
   useEffect(() => {
     getTopScorers()
       .then((data) => {
@@ -226,7 +223,7 @@ export default function TopScorers() {
               className="px-4 py-2 text-right cursor-pointer select-none"
               onClick={() => setSortDir(sortDir === "asc" ? "desc" : "asc")}
             >
-              Goals {sortDir === "asc" ? "⬆️" : "⬇️"}
+              Goals {sortDir === "asc" ? "⬆" : "↓"}
             </th>
 
             </tr>

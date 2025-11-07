@@ -1,6 +1,6 @@
-const API_BASE = "http://localhost:8000"; // change if deployed
+const API_BASE = "http://localhost:8000";
 
-// Generic request helper
+// request helper
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
@@ -11,7 +11,6 @@ async function request(path, options = {}) {
   });
 
   if (!res.ok) {
-    // Try to parse backend error JSON, fallback to status text
     const err = await res.json().catch(() => ({}));
     throw new Error(err.detail || res.statusText);
   }

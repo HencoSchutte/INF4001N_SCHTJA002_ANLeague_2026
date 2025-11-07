@@ -9,7 +9,7 @@
 
 
 html, body {
-  background: #000; /* fallback only */
+  background: #000; /* fallback */
   background: linear-gradient(to bottom right, #0a0f24, #0b1a3a, #081124);
   min-height: 100%;
   color-scheme: dark;

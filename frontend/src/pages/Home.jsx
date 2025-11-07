@@ -276,7 +276,7 @@ export default function Home() {
 
     {/* Progress line */}
     <div
-      className="absolute left-0 top-1/2 -translate-y-1/2 h-[3px] bg-gradient-to-r from-blue-400 to-blue-600 shadow-[0_0_12px_rgba(0,145,255,0.55)] rounded-full transition-all duration-800"
+      className="absolute left-0 right-0 top-[57%] -translate-y-1/2 h-[3px] bg-gradient-to-r from-blue-400 to-blue-600 shadow-[0_0_12px_rgba(0,145,255,0.55)] rounded-full transition-all duration-800"
       style={{
         width: `calc(${(currentStageIndex / (stages.length - 1)) * 100}%)`,
       }}
