@@ -1,5 +1,4 @@
-const API_BASE = "https://inf4001n-schtja002-anleague-2026.onrender.com";
-
+const API_BASE = import.meta.env.VITE_API_URL;
 // request helper
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {

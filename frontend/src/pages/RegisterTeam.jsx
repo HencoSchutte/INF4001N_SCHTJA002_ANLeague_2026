@@ -22,7 +22,7 @@ export default function RegisterTeam() {
 
 
   useEffect(() => {
-    fetch("http://localhost:8000/meta/countries/available")
+    fetch(`${import.meta.env.VITE_API_URL}/meta/countries/available`)
       .then((res) => res.json())
       .then((data) => {
         setCountries(data.available);
@@ -67,7 +67,7 @@ useEffect(() => {
 
   const controller = new AbortController();
   const timeout = setTimeout(() => {
-    fetch(`http://localhost:8000/teams/search?query=${form.teamName}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/teams/search?query=${form.teamName}`, {
       signal: controller.signal,
     })
       .then((res) => res.json())

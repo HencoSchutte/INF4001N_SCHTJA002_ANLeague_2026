@@ -30,7 +30,7 @@ export default function Teams() {
  useEffect(() => {
   (async () => {
     try {
-      const res = await fetch("http://localhost:8000/tournament/status");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tournament/status`);
       if (!res.ok) {
         setTournamentActive(false);
         return;

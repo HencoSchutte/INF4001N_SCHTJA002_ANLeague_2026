@@ -31,7 +31,7 @@ export default function TeamSquad() {
     let alive = true;
     (async () => {
       try {
-        const res = await fetch(`http://localhost:8000/teams/${id}?expand_players=true`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/teams/${id}?expand_players=true`);
         const data = await res.json();
         if (!alive) return;
         setTeam(data);

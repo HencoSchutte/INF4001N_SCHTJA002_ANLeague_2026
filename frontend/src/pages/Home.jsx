@@ -19,12 +19,12 @@ export default function Home() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const teamsRes = await fetch("http://localhost:8000/teams");
+        const teamsRes = await fetch(`${import.meta.env.VITE_API_URL}/teams`);
         const teams = await teamsRes.json();
 
         let matchesPlayed = 0;
         try {
-          const statusRes = await fetch("http://localhost:8000/tournament/status");
+          const statusRes = await fetch(`${import.meta.env.VITE_API_URL}/tournament/status`);
           if (statusRes.ok) {
             const statusData = await statusRes.json();
             matchesPlayed = statusData.matches_played || 0;
@@ -50,7 +50,7 @@ export default function Home() {
 
     async function fetchNextAndResults() {
       try {
-        const res = await fetch("http://localhost:8000/tournament/bracket");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/tournament/bracket`);
         if (!res.ok) return;
         const data = await res.json();
         const matches = data.matches || [];

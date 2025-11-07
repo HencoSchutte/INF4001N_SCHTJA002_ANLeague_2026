@@ -31,7 +31,7 @@ const reg = team?.region ?? "Africa"; // fallback to Africa or any default
 useEffect(() => {
   async function loadTeam() {
     try {
-      const tRes = await fetch(`http://localhost:8000/teams/${id}?expand_players=true`);
+      const tRes = await fetch(`${import.meta.env.VITE_API_URL}/teams/${id}?expand_players=true`);
         const tData = await tRes.json();
         setTeam(tData);
 
@@ -69,7 +69,7 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchCaptain = async () => {
-    const res = await fetch(`http://localhost:8000/teams/${id}?expand_players=true`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/teams/${id}?expand_players=true`);
     const t = await res.json();
     const cap = t.squad.find(p => p.isCaptain);
     setCaptain(cap);
@@ -80,7 +80,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchTeamNextMatch = async () => {
     try {
-      const res = await fetch("http://localhost:8000/tournament/bracket");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tournament/bracket`);
       if (!res.ok) return;
       const data = await res.json();
       const matches = data.matches || [];

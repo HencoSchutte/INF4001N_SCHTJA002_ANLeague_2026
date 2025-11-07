@@ -5,7 +5,7 @@ export default function LiveCommentary({ matchId }) {
   const endRef = useRef(null);
 
   useEffect(() => {
-    const evtSource = new EventSource(`http://localhost:8000/matches/${matchId}/commentary`);
+    const evtSource = new EventSource(`${import.meta.env.VITE_API_URL}/matches/${matchId}/commentary`);
 
     evtSource.onmessage = (e) => {
       const newLines = e.data.split("\n").filter(Boolean);
