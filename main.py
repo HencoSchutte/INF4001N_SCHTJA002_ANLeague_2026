@@ -74,6 +74,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_origins=[
+    "http://localhost:5173",
+    "https://inf4001n-schtja002-anleague-2026.netlify.app", # <-- once netlify domain exists
+    "https://inf4001n-schtja002-anleague-2026.onrender.com"
+],
+
 )
 # --- Load environment variables ---
 load_dotenv()

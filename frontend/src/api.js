@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://inf4001n-schtja002-anleague-2026.onrender.com";
 
 // request helper
 async function request(path, options = {}) {
